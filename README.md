@@ -45,14 +45,113 @@ data <- read.csv("data/data.csv")
 view(data)
 ```
 
-Manipulate the dataframe as necessary so that you can calculate average
+Manipulate the data frame as necessary so that you can calculate average
 duration, f0 and intensity as a function of lexical stress (extra points
 if you can create a plot)
 
 ``` r
-# calculate average duration as a function of lexical stress
+# data tidy
 
-# calculate average f0 as a function of lexical stress
+# one variable per cell
+# separate word & stressed condition (1, stressed; 2, unstressed)
+# change durationV column name
 
-# calculate average intensity as a function of lexical stress
+data_tidy <- data |>
+  separate(
+    col = info,
+    into = c("word", "stress_cond"),
+    sep = "_") |>
+  rename(duration = durationV)
+
+# data is ready!
 ```
+
+Calculate average duration as a function of lexical stress
+
+``` r
+data_duration <- data_tidy |> 
+  select(word, stress_cond, duration)
+
+aggregate(duration ~ stress_cond, FUN = mean, data = data_duration)
+```
+
+    ##   stress_cond duration
+    ## 1           1    0.148
+    ## 2           2    0.128
+
+Calculate average f0 as a function of lexical stress
+
+``` r
+data_f0 <- data_tidy |> 
+  select(word, stress_cond, f0)
+
+aggregate(f0 ~ stress_cond, FUN = mean, data = data_f0)
+```
+
+    ##   stress_cond      f0
+    ## 1           1 263.322
+    ## 2           2 216.644
+
+Calculate average intensity as a function of lexical stress
+
+``` r
+# create data frame exclusive for dur
+data_int <- data_tidy |> 
+  select(word, stress_cond, int)
+
+aggregate(int ~ stress_cond, FUN = mean, data = data_int)
+```
+
+    ##   stress_cond    int
+    ## 1           1 81.764
+    ## 2           2 76.214
+
+Extra points if you can create a plot
+
+``` r
+# create plot for average duration as a function of lexical stress
+
+ggplot(
+  data = data_duration,
+  mapping = aes(x = stress_cond, y = duration, color = word)
+) +
+  geom_point(aes(color = word)) +
+  labs(
+    title = "Average duration as a function of lexical stress",
+    x = "Stress Condition: 1, stressed; 2, unstressed", y = "Vowel Duration (ms)",
+    color = "Word")
+```
+
+![](README_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+
+``` r
+# create plot for average f0 as a function of lexical stress
+
+ggplot(
+  data = data_f0,
+  mapping = aes(x = stress_cond, y = f0, color = word)
+) +
+  geom_point(aes(color = word)) +
+  labs(
+    title = "Average f0 as a function of lexical stress",
+    x = "Stress Condition: 1, stressed; 2, unstressed", y = "Vowel F0",
+    color = "Word")
+```
+
+![](README_files/figure-gfm/unnamed-chunk-6-2.png)<!-- -->
+
+``` r
+# create plot for average intensity as a function of lexical stress
+
+ggplot(
+  data = data_int,
+  mapping = aes(x = stress_cond, y = int, color = word)
+) +
+  geom_point(aes(color = word)) +
+  labs(
+    title = "Average intensity as a function of lexical stress",
+    x = "Stress Condition: 1, stressed; 2, unstressed", y = "Vowel Intensity",
+    color = "Word")
+```
+
+![](README_files/figure-gfm/unnamed-chunk-6-3.png)<!-- -->
