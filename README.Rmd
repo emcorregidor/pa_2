@@ -1,0 +1,31 @@
+---
+output: github_document
+---
+
+Load the necessary packages and read in the data.csv file into R (use an R chunk)
+
+```{r}
+# loading common packages, not sure if they'll be used
+library(tidyverse)
+library(ggplot2)
+
+# see if R can read the file
+read.csv("data/data.csv")
+
+# asign data to an object
+data <- read.csv("data/data.csv")
+
+# view data
+view(data)
+```
+
+Manipulate the dataframe as necessary so that you can calculate average duration, f0 and intensity as a function of lexical stress (extra points if you can create a plot)
+
+```{r}
+# calculate average duration as a function of lexical stress
+
+# calculate average f0 as a function of lexical stress
+
+# calculate average intensity as a function of lexical stress
+```
+
